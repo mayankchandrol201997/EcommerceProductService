@@ -9,12 +9,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice(basePackageClasses = CartController.class)
-public class cartControllerExceptionHandler {
+public class CartControllerExceptionHandler {
 
     @ExceptionHandler(CartNotFoundException.class)
     public ResponseEntity handleCartNotFoundException(CartNotFoundException pe)
     {
         ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(404,pe.getMessage());
         return new ResponseEntity<>(exceptionResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoCartsFoundException.class)
+    public ResponseEntity handleNoCartsFoundException(NoCartsFoundException e)
+    {
+        ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(404,e.getMessage());
+        return new ResponseEntity<>(exceptionResponseDto,HttpStatus.NOT_FOUND);
     }
 }

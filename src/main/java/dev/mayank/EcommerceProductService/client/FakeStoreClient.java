@@ -1,5 +1,6 @@
 package dev.mayank.EcommerceProductService.client;
 
+import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
 import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
 import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class FakeStoreClient {
     private String fakeStoreApiProductPath;
     @Value("${fakestore.api.cart.by.userId.path}")
     private String fakeStoreApiCartByUserIdPath;
+    @Value("${fakestore.api.all.cart.url}")
+    private String fakeStoreApiAllCartUrl;
 
     public List<FakeStoreProductResponseDto> getAllProducts(){
         String fakeStoreGetAllProductUrl = fakeStoreBaseUrl.concat(fakeStoreApiProductPath);
@@ -49,5 +52,14 @@ public class FakeStoreClient {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreCartByUserIdResponseDto[]> cartByUserIdResponse = restTemplate.getForEntity(fakeStoregetCartByUserIdUrl, FakeStoreCartByUserIdResponseDto[].class);
         return List.of(cartByUserIdResponse.getBody());
+    }
+
+    public List<FakeStoreAllCartsResponseDto> getAllCarts()
+    {
+        String fakeStoreApiToGetAllCartUrl = fakeStoreBaseUrl.concat(fakeStoreApiAllCartUrl);
+        RestTemplate restTemplate = restTemplateBuilder.build();
+
+        ResponseEntity <FakeStoreAllCartsResponseDto[]> fakeStoreAllCartResponse =restTemplate.getForEntity(fakeStoreApiToGetAllCartUrl, FakeStoreAllCartsResponseDto[].class);
+        return List.of(fakeStoreAllCartResponse.getBody());
     }
 }

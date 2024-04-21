@@ -1,8 +1,10 @@
 package dev.mayank.EcommerceProductService.service;
 
 import dev.mayank.EcommerceProductService.client.FakeStoreClient;
+import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
 import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
 import dev.mayank.EcommerceProductService.exception.CartNotFoundException;
+import dev.mayank.EcommerceProductService.exception.NoCartsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,16 @@ public class FakeStoreCartServiceImpl implements CartService{
          }
 
          return fakeStoreCartByUserIdResponseDtoList;
+    }
+
+    @Override
+    public List<FakeStoreAllCartsResponseDto> getAllCarts() {
+        List<FakeStoreAllCartsResponseDto> fakeStoreAllCartsResponseDtoList =
+                fakeStoreClient.getAllCarts();
+
+        if (fakeStoreAllCartsResponseDtoList == null)
+            throw new NoCartsFoundException("No carts found");
+
+        return fakeStoreAllCartsResponseDtoList;
     }
 }

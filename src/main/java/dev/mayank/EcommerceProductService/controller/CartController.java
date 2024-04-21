@@ -1,5 +1,6 @@
 package dev.mayank.EcommerceProductService.controller;
 
+import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
 import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
 import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
 import dev.mayank.EcommerceProductService.exception.InvalidInputException;
@@ -24,6 +25,15 @@ public class CartController {
         List<FakeStoreCartByUserIdResponseDto> fakeStoreCartByUserIdResponseDto =
                 cartService.getCartBYUserId(userid);
         return ResponseEntity.ok(fakeStoreCartByUserIdResponseDto);
+    }
+
+    @GetMapping("/carts")
+    public ResponseEntity getAllCarts()
+    {
+        List<FakeStoreAllCartsResponseDto> fakeStoreAllCartsResponseDto =
+                cartService.getAllCarts();
+        return ResponseEntity.ok(fakeStoreAllCartsResponseDto);
+
     }
 
 }

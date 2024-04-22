@@ -6,16 +6,16 @@ import dev.mayank.EcommerceProductService.exception.InvalidInputException;
 import dev.mayank.EcommerceProductService.mapper.ProductEntityDtoMapper;
 import dev.mayank.EcommerceProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class ProductController {
     @Autowired
+    @Qualifier("productService")
     private ProductService productService;
 
     @GetMapping("/products")
@@ -35,5 +35,12 @@ public class ProductController {
         FakeStoreProductResponseDto product = productService.getProduct(id);
         //ProductEntityDtoMapper.convertProductEntityToProductResponseDto(pr)
         return ResponseEntity.ok(product);
+    }
+
+    @PostMapping("/product")
+    public ResponseEntity createProduct(@RequestBody Product product)
+    {
+        Product savedProduct = productService.createProduct(product);
+        return ResponseEntity.ok(savedProduct);
     }
 }

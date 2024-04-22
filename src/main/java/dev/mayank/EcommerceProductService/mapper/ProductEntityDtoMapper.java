@@ -8,7 +8,7 @@ public class ProductEntityDtoMapper {
     public static ProductResponseDto convertProductEntityToProductResponseDto(Product product)
     {
         ProductResponseDto productResponseDto = new ProductResponseDto();
-        productResponseDto.setProductId(product.getId());
+        //productResponseDto.setProductId(product.getId());
         productResponseDto.setCategory(product.getCategory());
         productResponseDto.setDescription(product.getCategory());
         productResponseDto.setTitle(product.getTitle());

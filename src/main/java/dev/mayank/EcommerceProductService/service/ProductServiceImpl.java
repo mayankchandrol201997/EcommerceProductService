@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service("productService")
 public class ProductServiceImpl implements ProductService{
@@ -16,13 +17,24 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Override
-    public List<FakeStoreProductResponseDto> getAllProducts() {
-        return List.of();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     @Override
-    public FakeStoreProductResponseDto getProduct(int productId) throws ProductNotFoundException {
-        return null;
+    public Product getProduct(UUID productId) throws ProductNotFoundException {
+        /*
+        Basic way to implement
+        Product savedProduct = productRepository.findById(productId).get();
+        if (savedProduct == null){
+            throw new ProductNotFoundException("Product not found for "+productId);
+        }
+        return savedProduct;
+         */
+
+       return productRepository.findById(productId).orElseThrow(
+                ()->new ProductNotFoundException("Product not found for "+productId)
+        );
     }
 
     @Override
@@ -32,12 +44,39 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean deleteProduct(int productId) {
-        return false;
+    public boolean deleteProduct(UUID productId) {
+         productRepository.deleteById(productId);
+        return true;
     }
 
     @Override
-    public Product updateProduct(Product updatedProduct, int productId) {
-        return null;
+    public Product updateProduct(Product updatedProduct, UUID productId) {
+        Product savedProduct = getProduct(productId);
+        savedProduct.setCategory(updatedProduct.getCategory());
+        savedProduct.setTitle(updatedProduct.getTitle());
+        savedProduct.setRating(updatedProduct.getRating());
+        savedProduct.setDescription(updatedProduct.getDescription());
+        savedProduct.setPrice(updatedProduct.getPrice());
+        savedProduct.setDescription(updatedProduct.getDescription());
+        savedProduct = productRepository.save(updatedProduct);
+        return savedProduct;
+    }
+
+    @Override
+    public Product getProductByName(String productName) {
+        Product savedProduct = productRepository.findProductByTitle(productName);
+        if (savedProduct == null)
+            throw new ProductNotFoundException("Product not found for "+productName);
+
+        return savedProduct;
+    }
+
+    @Override
+    public List<Product> getProductBetween(double minPrice, double maxPrice) {
+        List<Product> savedProducts = productRepository.findByPriceBetween(minPrice,maxPrice);
+        if (savedProducts == null)
+            throw new ProductNotFoundException("Product not found between "+minPrice+" & "+maxPrice);
+
+        return savedProducts;
     }
 }

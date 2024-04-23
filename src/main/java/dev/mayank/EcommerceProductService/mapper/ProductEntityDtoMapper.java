@@ -9,8 +9,7 @@ public class ProductEntityDtoMapper {
     {
         ProductResponseDto productResponseDto = new ProductResponseDto();
         //productResponseDto.setProductId(product.getId());
-        productResponseDto.setCategory(product.getCategory());
-        productResponseDto.setDescription(product.getCategory());
+        //productResponseDto.setDescription(product.getCategory());
         productResponseDto.setTitle(product.getTitle());
         productResponseDto.setPrice(product.getPrice());
         productResponseDto.setImageUrl(product.getImageUrl());

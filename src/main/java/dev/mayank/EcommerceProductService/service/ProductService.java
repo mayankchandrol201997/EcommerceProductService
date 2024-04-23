@@ -5,11 +5,14 @@ import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
 import dev.mayank.EcommerceProductService.exception.ProductNotFoundException;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ProductService {
-    List<FakeStoreProductResponseDto> getAllProducts();
-    FakeStoreProductResponseDto getProduct(int productId) throws ProductNotFoundException;
+    List<Product> getAllProducts();
+    Product getProduct(UUID productId) throws ProductNotFoundException;
     Product createProduct(Product product);
-    boolean deleteProduct(int productId);
-    Product updateProduct(Product updatedProduct,int productId);
+    boolean deleteProduct(UUID productId);
+    Product updateProduct(Product updatedProduct,UUID productId);
+    Product getProductByName(String productName);
+    List<Product> getProductBetween(double minPrice, double maxPrice);
 }

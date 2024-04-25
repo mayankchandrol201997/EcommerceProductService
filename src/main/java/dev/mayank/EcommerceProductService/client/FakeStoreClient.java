@@ -1,8 +1,8 @@
 package dev.mayank.EcommerceProductService.client;
 
-import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
-import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
-import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreAllCartsResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreCartByUserIdResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreProductResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

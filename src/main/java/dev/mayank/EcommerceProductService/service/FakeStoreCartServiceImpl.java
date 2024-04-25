@@ -1,8 +1,8 @@
 package dev.mayank.EcommerceProductService.service;
 
 import dev.mayank.EcommerceProductService.client.FakeStoreClient;
-import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
-import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreAllCartsResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreCartByUserIdResponseDto;
 import dev.mayank.EcommerceProductService.exception.CartNotFoundException;
 import dev.mayank.EcommerceProductService.exception.NoCartsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

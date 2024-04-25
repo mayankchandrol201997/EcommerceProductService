@@ -2,7 +2,7 @@ package dev.mayank.EcommerceProductService.service;
 
 import dev.mayank.EcommerceProductService.Entity.Product;
 import dev.mayank.EcommerceProductService.client.FakeStoreClient;
-import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreProductResponseDto;
 import dev.mayank.EcommerceProductService.exception.NoProductsFoundException;
 import dev.mayank.EcommerceProductService.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

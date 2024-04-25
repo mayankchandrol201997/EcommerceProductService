@@ -1,11 +1,8 @@
 package dev.mayank.EcommerceProductService.controller;
 
-import dev.mayank.EcommerceProductService.dto.FakeStoreAllCartsResponseDto;
-import dev.mayank.EcommerceProductService.dto.FakeStoreCartByUserIdResponseDto;
-import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
-import dev.mayank.EcommerceProductService.exception.InvalidInputException;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreAllCartsResponseDto;
+import dev.mayank.EcommerceProductService.dto.fakeStoreDto.FakeStoreCartByUserIdResponseDto;
 import dev.mayank.EcommerceProductService.service.CartService;
-import dev.mayank.EcommerceProductService.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,12 +1,18 @@
 package dev.mayank.EcommerceProductService.service;
 
+import dev.mayank.EcommerceProductService.Entity.Category;
 import dev.mayank.EcommerceProductService.Entity.Product;
-import dev.mayank.EcommerceProductService.dto.FakeStoreProductResponseDto;
+import dev.mayank.EcommerceProductService.dto.CreateProductRequestDto;
+import dev.mayank.EcommerceProductService.dto.ProductResponseDto;
+import dev.mayank.EcommerceProductService.exception.CategoryNotFoundException;
 import dev.mayank.EcommerceProductService.exception.ProductNotFoundException;
+import dev.mayank.EcommerceProductService.mapper.ProductEntityDtoMapper;
+import dev.mayank.EcommerceProductService.repository.CategoryRepository;
 import dev.mayank.EcommerceProductService.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,14 +21,23 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+        for (Product product:products)
+        {
+            productResponseDtos.add(
+                    ProductEntityDtoMapper.convertProductEntityToProductResponseDto(product));
+        }
+        return productResponseDtos;
     }
 
     @Override
-    public Product getProduct(UUID productId) throws ProductNotFoundException {
+    public ProductResponseDto getProduct(UUID productId) throws ProductNotFoundException {
         /*
         Basic way to implement
         Product savedProduct = productRepository.findById(productId).get();
@@ -32,15 +47,29 @@ public class ProductServiceImpl implements ProductService{
         return savedProduct;
          */
 
-       return productRepository.findById(productId).orElseThrow(
+       Product product = productRepository.findById(productId).orElseThrow(
                 ()->new ProductNotFoundException("Product not found for "+productId)
         );
+
+        ProductResponseDto productResponseDto =
+                ProductEntityDtoMapper.convertProductEntityToProductResponseDto(product);
+
+        return productResponseDto;
+
     }
 
     @Override
-    public Product createProduct(Product product) {
+    public ProductResponseDto createProduct(CreateProductRequestDto productRequestDto) {
+        Product product = ProductEntityDtoMapper.convertCreateProductRequestDtoToProduct(productRequestDto);
+        Category savedCategory = categoryRepository.findById(productRequestDto.getCategoryId()).orElseThrow(
+                ()-> new CategoryNotFoundException("Categoty not found for category Id "+productRequestDto.getCategoryId())
+        );
+
+        product.setCategory(savedCategory);
         Product savedProduct = productRepository.save(product);
-        return savedProduct;
+        savedCategory.getProducts().add(product);
+        categoryRepository.save(savedCategory);
+        return ProductEntityDtoMapper.convertProductEntityToProductResponseDto(savedProduct);
     }
 
     @Override
@@ -50,33 +79,41 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProduct(Product updatedProduct, UUID productId) {
-        Product savedProduct = getProduct(productId);
-        savedProduct.setCategory(updatedProduct.getCategory());
+    public ProductResponseDto updateProduct(CreateProductRequestDto updatedProduct, UUID productId) {
+        Product savedProduct = productRepository.findById(productId).orElseThrow(
+                ()->new ProductNotFoundException("Product not found for "+productId));
+
         savedProduct.setTitle(updatedProduct.getTitle());
-        savedProduct.setRating(updatedProduct.getRating());
         savedProduct.setDescription(updatedProduct.getDescription());
         savedProduct.setPrice(updatedProduct.getPrice());
         savedProduct.setDescription(updatedProduct.getDescription());
-        savedProduct = productRepository.save(updatedProduct);
-        return savedProduct;
+        savedProduct = productRepository.save(savedProduct);
+
+        return ProductEntityDtoMapper.convertProductEntityToProductResponseDto(savedProduct);
     }
 
     @Override
-    public Product getProductByName(String productName) {
+    public ProductResponseDto getProductByName(String productName) {
         Product savedProduct = productRepository.findProductByTitle(productName);
         if (savedProduct == null)
             throw new ProductNotFoundException("Product not found for "+productName);
 
-        return savedProduct;
+            return ProductEntityDtoMapper.convertProductEntityToProductResponseDto(savedProduct);
+
     }
 
     @Override
-    public List<Product> getProductBetween(double minPrice, double maxPrice) {
+    public List<ProductResponseDto> getProductBetween(double minPrice, double maxPrice) {
         List<Product> savedProducts = productRepository.findByPriceBetween(minPrice,maxPrice);
         if (savedProducts == null)
             throw new ProductNotFoundException("Product not found between "+minPrice+" & "+maxPrice);
 
-        return savedProducts;
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+        for (Product product:savedProducts)
+        {
+            productResponseDtos.add(
+                    ProductEntityDtoMapper.convertProductEntityToProductResponseDto(product));
+        }
+        return productResponseDtos;
     }
 }

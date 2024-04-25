@@ -1,9 +1,8 @@
-package dev.mayank.EcommerceProductService.dto;
+package dev.mayank.EcommerceProductService.dto.fakeStoreDto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter

@@ -5,6 +5,7 @@ import dev.mayank.EcommerceProductService.Entity.Product;
 import dev.mayank.EcommerceProductService.dto.CreateProductRequestDto;
 import dev.mayank.EcommerceProductService.dto.ProductResponseDto;
 import dev.mayank.EcommerceProductService.exception.CategoryNotFoundException;
+import dev.mayank.EcommerceProductService.exception.NoProductsFoundException;
 import dev.mayank.EcommerceProductService.exception.ProductNotFoundException;
 import dev.mayank.EcommerceProductService.mapper.ProductEntityDtoMapper;
 import dev.mayank.EcommerceProductService.repository.CategoryRepository;
@@ -27,6 +28,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<ProductResponseDto> getAllProducts() {
         List<Product> products = productRepository.findAll();
+        if (products.isEmpty())
+        {
+            throw new NoProductsFoundException("No products found");
+        }
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();
         for (Product product:products)
         {
@@ -62,7 +67,7 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponseDto createProduct(CreateProductRequestDto productRequestDto) {
         Product product = ProductEntityDtoMapper.convertCreateProductRequestDtoToProduct(productRequestDto);
         Category savedCategory = categoryRepository.findById(productRequestDto.getCategoryId()).orElseThrow(
-                ()-> new CategoryNotFoundException("Categoty not found for category Id "+productRequestDto.getCategoryId())
+                ()-> new CategoryNotFoundException("Category not found for category Id "+productRequestDto.getCategoryId())
         );
 
         product.setCategory(savedCategory);

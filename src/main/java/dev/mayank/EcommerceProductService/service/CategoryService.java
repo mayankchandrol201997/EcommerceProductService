@@ -13,4 +13,5 @@ public interface CategoryService {
     CategoryResponseDto updateCategory(CategoryRequestDto categoryRequestDto, UUID categoryId);
     CategoryResponseDto getCategoryByName(String categoryName);
 
+    double getTotalPriceOfProductInCategory(UUID categoryId);
 }

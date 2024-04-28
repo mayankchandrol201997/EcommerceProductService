@@ -23,4 +23,11 @@ public class CategoryControllerExceptionHandler {
         ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(404,e.getMessage());
         return new ResponseEntity<>(exceptionResponseDto, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidCategoryInputException.class)
+    public ResponseEntity<ExceptionResponseDto> handleInvalidCategoryInputException(InvalidCategoryInputException e)
+    {
+        ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(404,e.getMessage());
+        return new ResponseEntity<>(exceptionResponseDto, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -53,13 +53,22 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable("id") UUID categoryId,@RequestBody CategoryRequestDto categoryRequestDto)
     {
+        if (categoryRequestDto.getName().isBlank()||categoryRequestDto.getName().isEmpty())
+            throw new InvalidCategoryInputException("Invalid input request");
+
         return ResponseEntity.ok(categoryService.updateCategory(categoryRequestDto,categoryId));
     }
 
-    @GetMapping("/categotyName/{name}")
+    @GetMapping("/categoryName/{name}")
     public ResponseEntity<CategoryResponseDto> getCategoryByNAme(@PathVariable("name") String categoryName)
     {
         return ResponseEntity.ok(categoryService.getCategoryByName(categoryName));
+    }
+
+    @GetMapping("/totalPrice/{id}")
+    public ResponseEntity<Double> getTotalPriceOfProductInCategory(@PathVariable("id") UUID categoryId)
+    {
+        return ResponseEntity.ok(categoryService.getTotalPriceOfProductInCategory(categoryId));
     }
 
 }

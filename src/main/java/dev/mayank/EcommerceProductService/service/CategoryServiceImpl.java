@@ -1,6 +1,7 @@
 package dev.mayank.EcommerceProductService.service;
 
 import dev.mayank.EcommerceProductService.Entity.Category;
+import dev.mayank.EcommerceProductService.Entity.Product;
 import dev.mayank.EcommerceProductService.dto.CategoryRequestDto;
 import dev.mayank.EcommerceProductService.dto.CategoryResponseDto;
 import dev.mayank.EcommerceProductService.exception.CategoryNotFoundException;
@@ -77,5 +78,21 @@ public class CategoryServiceImpl implements CategoryService{
             throw new NoCategoryFoundException("Category not found with category name " + categoryName);
 
         return CategoryEntityDtoMapper.convertCategoryEntityToCategoryResponseDto(category);
+    }
+
+    @Override
+    public double getTotalPriceOfProductInCategory(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new CategoryNotFoundException("Category not found with category id "+categoryId)
+        );
+
+        if (!category.getProducts().isEmpty()) {
+            double totalAmount = 0;
+            for (Product product : category.getProducts()) {
+                totalAmount = totalAmount + product.getPrice();
+            }
+            return totalAmount;
+        }
+        return 0;
     }
 }
